@@ -1,0 +1,63 @@
+### Create user 1
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "email": "alice@example.com"
+}
+
+### List users (should include Alice)
+GET http://localhost:8080/api/users
+
+### Create user 2
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "name": "Bob",
+  "email": "bob@example.com"
+}
+
+### List users (should be 2)
+GET http://localhost:8080/api/users
+
+### User 1 creates a poll
+POST http://localhost:8080/api/polls
+Content-Type: application/json
+
+{
+  "question": "Best JS runtime?",
+  "creatorId": 1,
+  "options": ["Node.js", "Deno"]
+}
+
+### List polls (should include the new poll)
+GET http://localhost:8080/api/polls
+
+### User 2 votes on the poll (option id 1st option -> adjust after checking)
+POST http://localhost:8080/api/votes
+Content-Type: application/json
+
+{
+  "voterId": 2,
+  "optionId": 1
+}
+
+### User 2 changes his vote (to option id 2)
+POST http://localhost:8080/api/votes
+Content-Type: application/json
+
+{
+  "voterId": 2,
+  "optionId": 2
+}
+
+### List votes (should show only the most recent for Bob)
+GET http://localhost:8080/api/votes
+
+### Delete the poll
+DELETE http://localhost:8080/api/polls/1
+
+### List votes (should be empty)
+GET http://localhost:8080/api/votes
