@@ -10,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:5173") // Vite-dev
 public class UserController {
     private final PollManager pm;
     public UserController(PollManager pm) { this.pm = pm; }
