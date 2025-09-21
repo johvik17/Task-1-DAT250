@@ -1,29 +1,45 @@
 plugins {
-	java
-	id("org.springframework.boot") version "3.5.5"
-	id("io.spring.dependency-management") version "1.1.7"
+    java
 }
 
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
-description = "Demo project for Spring Boot"
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain { languageVersion = JavaLanguageVersion.of(21) }
 }
 
-repositories {
-	mavenCentral()
-}
+repositories { mavenCentral() }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // Kun det vi trenger for JPA-oppgaven
+    implementation("org.hibernate.orm:hibernate-core:7.1.1.Final")
+    implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
+    implementation("com.h2database:h2:2.3.232")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.3")
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
+tasks.test { useJUnitPlatform() }
+
+
+sourceSets {
+    main {
+        java {
+            setSrcDirs(listOf("src/main/java"))
+            // ekskluder Spring Boot app + web + service
+            exclude(
+                "com/example/demo/DemoApplication.java",
+                "com/example/demo/web/**",
+                "com/example/demo/service/**"
+            )
+        }
+        resources {
+            setSrcDirs(listOf("src/main/resources"))
+        }
+    }
+    test {
+        java.setSrcDirs(listOf("src/test/java"))
+        resources.setSrcDirs(listOf("src/test/resources"))
+    }
 }
